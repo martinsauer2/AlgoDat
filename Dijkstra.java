@@ -26,15 +26,48 @@ public class Dijkstra {
     knotenmenge.add(d);
     knotenmenge.add(e);
 
-    Digraph g = new Digraph(knotenmenge, a);
+    Digraph graph = new Digraph(knotenmenge, a);
 
-    System.out.println(dijkstra(g, a));
+    dijkstra(graph);
+
+    System.out.print(gibErgebnisAus(graph));
+
+    //System.out.println(zeigePfadZu(c));
   }
 
-  public static String dijkstra(Digraph g, Knoten ziel) {
+  private static String zeigePfadZu(Knoten ziel) {
     String s = "";
-    
+    Knoten k = ziel;
+
+    while(k != null) {
+      s = k.getName() + " " + s;
+      k = k.getVorgänger();
+    }
+
+    s += "\n" + "Kosten: " + ziel.getKostenBisHier();
+
+    return s;
+  }
+
+  private static String gibErgebnisAus(Digraph graph) {
+    String s = "Knoten : Kosten, Vorgänger\n--------------------------\n";
+
+    for (Knoten k : graph.getKnotenmenge()) {
+      if (k.getVorgänger() != null) {
+        s += k.getName() + ": " + k.getKostenBisHier() + ", " + k.getVorgänger().getName() + "\n";  
+      } else {
+        s += k.getName() + ": " + k.getKostenBisHier() + ", " + "-" + "\n";
+      } 
+    }
+
+    return s;
+  }
+
+  public static void dijkstra(Digraph g) {
     // Kosten initialisieren
+    for (Knoten k : g.getKnotenmenge()) {
+      k.setKostenBisHier(Integer.MAX_VALUE);
+    }
     g.getStartknoten().setKostenBisHier(0);
     
     // initialisiere unbesuchte Knoten in Warteschlange
@@ -44,18 +77,30 @@ public class Dijkstra {
     }
 
     // Schritt 2
-    while(unbesuchteKnoten.size() != 0) {
-      // Knoten wird aus Queue herausgenommen -> als besucht markiert
+    while(! unbesuchteKnoten.isEmpty()) {
+      // Knoten mit minimalen Kosten wird aus Queue herausgenommen -> als besucht markiert
       Knoten derzeitigerKnoten = unbesuchteKnoten.poll();
-      s += derzeitigerKnoten.getName();
 
-      // Wenn herausgenommener Knoten Zielknoten, dann Abbruch
-      if (derzeitigerKnoten.equals(ziel)) {
-        return s;
+      // Iteriere über alle Nachbarknoten
+      for (Pfad p : derzeitigerKnoten.getNachbarn()) {
+        // wenn Nachbarknoten noch unbesucht ist
+        if (unbesuchteKnoten.contains(p.getZiel())) {
+          // Berechne Kosten für Nachbarknoten
+          int neueKosten = derzeitigerKnoten.getKostenBisHier() + p.getKosten();
+          // Wenn berechnete Kosten kleiner als bisherige Kosten
+          if (neueKosten < p.getZiel().getKostenBisHier()) {
+            // aktualisiere Kosten
+            p.getZiel().setKostenBisHier(neueKosten);
+            // und setze aktuellen Knoten als Vorgänger
+            p.getZiel().setVorgänger(derzeitigerKnoten);
+
+            // Element in Queue updaten
+            unbesuchteKnoten.remove(p.getZiel());
+            unbesuchteKnoten.add(p.getZiel());
+          }
+        }
       }
     }
-
-    return s;
   }
 
 }

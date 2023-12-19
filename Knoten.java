@@ -4,8 +4,8 @@ import java.util.Iterator;
 public class Knoten implements Comparable<Knoten> {
   
   // ++++++++++++++++++++++++++++
-  private int kostenBisHier = Integer.MAX_VALUE;
-  private Knoten vorgänger;
+  private int kostenBisHier;
+  private Knoten vorgänger = null;
   // ++++++++++++++++++++++++++++
   
   private String name;
