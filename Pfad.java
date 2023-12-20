@@ -1,6 +1,11 @@
+/*
+ * Diese Klasse repräsentiert Pfade zu Nachbarknoten eines Knotens.
+ */
 public class Pfad {
   
+  // Zielknoten (also Nachbar)
   private Knoten ziel;
+  // Kosten, um dorthin zu gelangen
   private int kosten;
 
   public Pfad(Knoten ziel, int kosten) {

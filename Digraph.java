@@ -1,8 +1,13 @@
 import java.util.ArrayList;
 
+/*
+ * Diese Klasse repräsentiert einen gerichteten Graphen.
+ */
 public class Digraph {
   
+  // Liste mit allen zum Graph zugehörigen Knoten
   private ArrayList<Knoten> knotenmenge;
+  // Startknoten des Graphs
   private Knoten startknoten;
 
   public Digraph(ArrayList<Knoten> knotenmenge, Knoten startknoten) {

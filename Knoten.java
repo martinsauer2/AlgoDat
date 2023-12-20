@@ -1,10 +1,16 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/*
+ * Diese Klasse repräsentiert Knoten in einem gerichteten Graphen.
+ */
 public class Knoten implements Comparable<Knoten> {
   
+  // für den Dijkstra-Algorithmus relevant
   // ++++++++++++++++++++++++++++
+  // Kosten zu diesem Knoten vom Startknoten aus
   private int kostenBisHier;
+  // Vorgängerknoten zur Bestimmung des Pfades
   private Knoten vorgänger = null;
   // ++++++++++++++++++++++++++++
   
@@ -20,8 +26,6 @@ public class Knoten implements Comparable<Knoten> {
     benachbarteKnoten.add(new Pfad(ziel, kosten));
   }
 
-  // -------------------------------------------------------
-
   public String getName() {
     return name;
   }
@@ -30,6 +34,7 @@ public class Knoten implements Comparable<Knoten> {
     return benachbarteKnoten;
   }
 
+  // Gibt die Nachbarn und die zugehörigen Kosten, um diese zu erreichen, aus
   public String gibNachbarnAus() {
     String s = "";
     Iterator<Pfad> iter = benachbarteKnoten.iterator();
@@ -58,6 +63,7 @@ public class Knoten implements Comparable<Knoten> {
     this.vorgänger = vorgänger;
   }
 
+  // Methode zum Vergleich zweier Knoten, relevant für PriorityQueue im Dijkstra-Algorithmus
   @Override
   public int compareTo(Knoten k) {
     if (kostenBisHier == k.getKostenBisHier()) return 0;
